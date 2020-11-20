@@ -211,7 +211,7 @@ float LinuxParser::CpuUtilization(int pid){
         }
         long total_time = utime + stime;
         total_time =  total_time + cutime + cstime;
-        float seconds = uptime - (starttime / sysconf(_SC_CLK_TCK));
+        float seconds = starttime;//uptime - (starttime / sysconf(_SC_CLK_TCK));
         if (seconds>0.0){cpu_usage = ((total_time / sysconf(_SC_CLK_TCK)) / seconds);}
     }
             catch (...){cpu_usage= 0.0;}
@@ -282,7 +282,7 @@ string LinuxParser::Uid(int pid) {
 long LinuxParser::UpTime(int pid) { 
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
   string line, value;
-  long uptime_in_clock_ticks;
+  long uptime;
   if (filestream.is_open()){
         std::getline(filestream,line);
         std::istringstream linestream(line);
@@ -291,10 +291,10 @@ long LinuxParser::UpTime(int pid) {
           linestream >> value;
         }
         linestream >> value;
-        uptime_in_clock_ticks = (std::stol(value))/sysconf(_SC_CLK_TCK);
+        uptime = (std::stol(value))/sysconf(_SC_CLK_TCK);
         
         
         }
-        catch (...){uptime_in_clock_ticks= 0;}
+        catch (...){uptime= 0;}
   }
-  return uptime_in_clock_ticks; }
+  return uptime; }

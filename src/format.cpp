@@ -1,17 +1,31 @@
+
+  
 #include <string>
 
 #include "format.h"
 
 using std::string;
+using std::to_string;
 
-// TODO: Complete this helper function
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
-// REMOVE: [[maybe_unused]] once you define the function
-string Format::ElapsedTime(long time_in_secs) { 
-    long hh = time_in_secs/3600;
-    long remaining_seconds = time_in_secs-(hh*3600);
-    long mm = remaining_seconds/60;
-    long ss = remaining_seconds - (mm*60);
-    return (std::to_string(hh)+":"+std::to_string(mm)+":"+std::to_string(ss));
+
+// Add zero to single digit number, e.g. "2" becomes "02"
+string AppendZero(const long number) {
+  if (number < 10)
+    return "0" + to_string(number);
+  else
+    return to_string(number);
+}
+
+string Format::ElapsedTime(const long seconds) {
+  const int seconds_in_minutes = 60;
+  const int seconds_in_hours = 3600;
+
+  const long hours = seconds / seconds_in_hours;
+  const int minutes = (seconds % seconds_in_hours) / seconds_in_minutes;
+  const int remaining_seconds = seconds % seconds_in_minutes;
+
+  return AppendZero(hours) + ":" + AppendZero(minutes) + ":" +
+         AppendZero(remaining_seconds);
 }
