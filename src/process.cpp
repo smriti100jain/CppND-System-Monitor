@@ -34,5 +34,5 @@ long int Process::UpTime() { return _uptime; }
 bool Process::operator<(Process const& p) const { 
     float u2 = p._cpu_utilization;
     float u1 = _cpu_utilization;
-    return (u1>u2)?true:false; 
+    return (u1<u2)?true:false; 
     }

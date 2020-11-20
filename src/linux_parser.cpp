@@ -192,6 +192,8 @@ float LinuxParser::CpuUtilization(int pid){
   string line, value;
   long utime, stime, cutime, cstime, starttime, uptime;
   
+  uptime= UpTime();
+
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
   
   float cpu_usage= 0.0;
@@ -206,7 +208,6 @@ float LinuxParser::CpuUtilization(int pid){
           if (i==15){ cutime= stol(value);}
           if (i==16){ cstime= stol(value);}
           if (i==21){ starttime= stol(value);}
-          if (i==22){uptime = stol(value);}
         }
         long total_time = utime + stime;
         total_time =  total_time + cutime + cstime;

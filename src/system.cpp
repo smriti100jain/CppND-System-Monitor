@@ -26,6 +26,7 @@ vector<Process>& System::Processes() {
     }
     // sort processes by cpu utilization
     std::sort(processes_.begin(),processes_.end());
+    std::reverse(processes_.begin(),processes_.end());
     return processes_; }
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
