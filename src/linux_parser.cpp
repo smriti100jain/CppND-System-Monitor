@@ -192,8 +192,6 @@ float LinuxParser::CpuUtilization(int pid){
   string line, value;
   long utime, stime, cutime, cstime, starttime, uptime;
   
-  uptime= UpTime();
-
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
   
   float cpu_usage= 0.0;
@@ -208,11 +206,12 @@ float LinuxParser::CpuUtilization(int pid){
           if (i==15){ cutime= stol(value);}
           if (i==16){ cstime= stol(value);}
           if (i==21){ starttime= stol(value);}
+          if (i==22){uptime = stol(value);}
         }
         long total_time = utime + stime;
         total_time =  total_time + cutime + cstime;
         float seconds = uptime - (starttime / sysconf(_SC_CLK_TCK));
-        if (seconds>0.0){cpu_usage = 100 * ((total_time / sysconf(_SC_CLK_TCK)) / seconds);}
+        if (seconds>0.0){cpu_usage = ((total_time / sysconf(_SC_CLK_TCK)) / seconds);}
     }
             catch (...){cpu_usage= 0.0;}
 
@@ -238,7 +237,8 @@ string LinuxParser::Ram(int pid) {
         std::replace(line.begin(), line.end(), ':', ' ');
         std::istringstream linestream(line);
         linestream >> key >> value;
-        if (key == "VmSize") {ram = to_string((long) (0.001*stof(value)));
+        // I have used VmData insteadh of VmSize
+        if (key == "VmData") {ram = to_string((long) (0.001*stof(value)));
         break;}
         }
       }
