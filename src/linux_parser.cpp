@@ -190,9 +190,9 @@ int LinuxParser::RunningProcesses() {
 
 float LinuxParser::CpuUtilization(int pid){
   string line, value;
-  long utime, stime, cutime, cstime, starttime, uptime;
+  long utime, stime, cutime, cstime, starttime;// uptime;
   
-  uptime= UpTime();
+  //uptime= UpTime();
 
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
   
